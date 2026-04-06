@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train to Corporate | Professional Development Institute</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050a12;
+            --bg-secondary: #0d1424;
+            --fg: #f0f4f8;
+            --fg-muted: #8892a4;
+            --accent: #00d4aa;
+            --accent-hover: #00f5c4;
+            --card: #111827;
+            --card-hover: #1a2438;
+            --border: #1e293b;
+            --input-bg: #0a101c;
+            --gradient-start: #00d4aa;
+            --gradient-end: #0088ff;
+        }
+
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --bg-secondary: #ffffff;
+            --fg: #0f172a;
+            --fg-muted: #64748b;
+            --accent: #0891b2;
+            --accent-hover: #06b6d4;
+            --card: #ffffff;
+            --card-hover: #f1f5f9;
+            --border: #e2e8f0;
+            --input-bg: #f1f5f9;
+            --gradient-start: #0891b2;
+            --gradient-end: #0284c7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        /* Page transitions */
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero video background */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(5, 10, 18, 0.92) 0%, rgba(5, 10, 18, 0.75) 50%, rgba(5, 10, 18, 0.85) 100%);
+            z-index: -1;
+        }
+
+        [data-theme="light"] .hero-overlay {
+            background: linear-gradient(135deg, rgba(248, 250, 252, 0.88) 0%, rgba(248, 250, 252, 0.7) 50%, rgba(248, 250, 252, 0.82) 100%);
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-scrolled {
+            background-color: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--fg);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent);
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            position: relative;
+        }
+
+        .logo-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: relative;
+            width: 64px;
+            height: 32px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        [data-theme="light"] .toggle-slider {
+            transform: translateX(32px);
+        }
+
+        .toggle-slider svg {
+            width: 14px;
+            height: 14px;
+            color: white;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: #050a12;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--gradient-end), var(--gradient-start));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
+
+        .btn-primary span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0, 212, 170, 0.3);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            background: transparent;
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(0, 212, 170, 0.05);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: var(--card-hover);
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 212, 170, 0.1);
+        }
+
+        /* Stats counter */
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Form styles */
+        .form-section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .form-section-title svg {
+            color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--fg);
+        }
+
+        .form-label span {
+            color: #ef4444;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--input-bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(0, 212, 170, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--fg-muted);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--input-bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238892a4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(0, 212, 170, 0.1);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--input-bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            min-height: 120px;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(0, 212, 170, 0.1);
+        }
+
+        /* Radio and checkbox */
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .radio-item input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--fg);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 999;
+            padding: 6rem 2rem;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 1rem;
+            color: var(--fg);
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--accent);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .animate-delay-1 { animation-delay: 0.1s; }
+        .animate-delay-2 { animation-delay: 0.2s; }
+        .animate-delay-3 { animation-delay: 0.3s; }
+        .animate-delay-4 { animation-delay: 0.4s; }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Reveal on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Course cards */
+        .course-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .stat-number {
+                font-size: 2.25rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-container {
+                padding: 1rem;
+            }
+
+            .form-section {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .logo-text {
+                font-size: 1rem;
+            }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: var(--card);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            color: var(--fg);
+            font-weight: 500;
+            z-index: 2000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.active {
+            transform: translateX(0);
+        }
+
+        /* Grid pattern background */
+        .grid-pattern {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        [data-theme="light"] .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(8, 145, 178, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(8, 145, 178, 0.05) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Navigation -->
+    <nav class="nav-container" id="navbar">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="#" class="logo" onclick="showPage('home')">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="10" width="28" height="28" rx="4" stroke="url(#logoGrad)" stroke-width="3"/>
+                        <path d="M18 24L12 30L18 36" stroke="url(#logoGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M46 10L38 18L46 26" stroke="url(#logoGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="36" cy="36" r="8" stroke="url(#logoGrad)" stroke-width="3"/>
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48">
+                                <stop offset="0%" stop-color="#00d4aa"/>
+                                <stop offset="100%" stop-color="#0088ff"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">Train to Corporate</span>
+            </a>
+
+            <div class="nav-links flex items-center gap-1">
+                <a href="#" class="nav-link active" data-page="home" onclick="showPage('home')">Home</a>
+                <a href="#" class="nav-link" data-page="about" onclick="showPage('about')">About</a>
+                <a href="#" class="nav-link" data-page="courses" onclick="showPage('courses')">Courses</a>
+                <a href="#" class="nav-link" data-page="register" onclick="showPage('register')">Register</a>
+                <a href="#" class="nav-link" data-page="contact" onclick="showPage('contact')">Contact</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                    <div class="toggle-slider">
+                        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </div>
+                </button>
+
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#" onclick="showPage('home'); toggleMobileMenu()">Home</a>
+        <a href="#" onclick="showPage('about'); toggleMobileMenu()">About</a>
+        <a href="#" onclick="showPage('courses'); toggleMobileMenu()">Courses</a>
+        <a href="#" onclick="showPage('register'); toggleMobileMenu()">Register</a>
+        <a href="#" onclick="showPage('contact'); toggleMobileMenu()">Contact</a>
+    </div>
+
+    <!-- HOME PAGE -->
+    <div class="page active" id="home">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <video class="hero-video" autoplay muted loop playsinline>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-business-woman-working-on-laptop-in-modern-office-47898-large.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+            <div class="grid-pattern"></div>
+            
+            <div class="hero-content max-w-7xl mx-auto px-6 py-32 relative z-10">
+                <div class="max-w-3xl">
+                    <p class="text-sm font-semibold tracking-wider mb-4 animate-fadeInUp" style="color: var(--accent);">
+                        PROFESSIONAL DEVELOPMENT INSTITUTE
+                    </p>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeInUp animate-delay-1" style="font-family: 'Space Grotesk', sans-serif;">
+                        Bridge the Gap Between Education and Career Excellence
+                    </h1>
+                    <p class="text-lg md:text-xl mb-8 animate-fadeInUp animate-delay-2" style="color: var(--fg-muted);">
+                        Comprehensive corporate training programs designed to transform graduates into industry-ready professionals. Master the skills that employers demand.
+                    </p>
+                    <div class="flex flex-wrap gap-4 animate-fadeInUp animate-delay-3">
+                        <button class="btn-primary" onclick="showPage('register')">
+                            <span>Start Your Journey</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                        <button class="btn-secondary" onclick="showPage('courses')">
+                            <span>Explore Programs</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-float">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--fg-muted);">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-20 relative" style="background: var(--bg-secondary);">
+            <div class="grid-pattern"></div>
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div class="text-center reveal">
+                        <div class="stat-number" data-target="15000">0</div>
+                        <p style="color: var(--fg-muted);">Professionals Trained</p>
+                    </div>
+                    <div class="text-center reveal">
+                        <div class="stat-number" data-target="200">0</div>
+                        <p style="color: var(--fg-muted);">Corporate Partners</p>
+                    </div>
+                    <div class="text-center reveal">
+                        <div class="stat-number" data-target="95">0</div>
+                        <p style="color: var(--fg-muted);">Placement Rate %</p>
+                    </div>
+                    <div class="text-center reveal">
+                        <div class="stat-number" data-target="50">0</div>
+                        <p style="color: var(--fg-muted);">Training Programs</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16 reveal">
+                    <p class="text-sm font-semibold tracking-wider mb-2" style="color: var(--accent);">WHY CHOOSE US</p>
+                    <h2 class="text-3xl md:text-4xl font-bold" style="font-family: 'Space Grotesk', sans-serif;">Industry-Leading Training Methodology</h2>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="card reveal">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), rgba(0, 136, 255, 0.1));">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent);">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                                <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="font-family: 'Space Grotesk', sans-serif;">Practical Learning</h3>
+                        <p style="color: var(--fg-muted);">Hands-on projects and real-world scenarios that mirror actual workplace challenges. Learn by doing, not just watching.</p>
+                    </div>
+
+                    <div class="card reveal">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), rgba(0, 136, 255, 0.1));">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent);">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="font-family: 'Space Grotesk', sans-serif;">Expert Mentors</h3>
+                        <p style="color: var(--fg-muted);">Learn from industry veterans with decades of corporate experience. Get insights that textbooks cannot teach.</p>
+                    </div>
+
+                    <div class="card reveal">
+                        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style="background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), rgba(0, 136, 255, 0.1));">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent);">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="font-family: 'Space Grotesk', sans-serif;">Placement Support</h3>
+                        <p style="color: var(--fg-muted);">Dedicated placement cell with strong corporate connections. Resume building, interview prep, and job referrals included.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 relative" style="background: var(--bg-secondary);">
+            <div class="grid-pattern"></div>
+            <div class="max-w-4xl mx-auto px-6 text-center reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6" style="font-family: 'Space Grotesk', sans-serif;">Ready to Transform Your Career?</h2>
+                <p class="text-lg mb-8" style="color: var(--fg-muted);">Join thousands of professionals who have accelerated their careers with our comprehensive training programs.</p>
+                <button class="btn-primary" onclick="showPage('register')">
+                    <span>Register Now</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div class="page" id="about">
+        <section class="pt-32 pb-20 relative">
+            <div class="grid-pattern"></div>
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="max-w-3xl mx-auto text-center mb-16 reveal">
+                    <p class="text-sm font-semibold tracking-wider mb-2" style="color: var(--accent);">ABOUT US</p>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6" style="font-family: 'Space Grotesk', sans-serif;">Shaping Tomorrow's Corporate Leaders</h1>
+                    <p class="text-lg" style="color: var(--fg-muted);">Since 2010, Train to Corporate has been the bridge between academic knowledge and corporate excellence. We believe every graduate deserves the opportunity to thrive in their career.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
+                    <div class="reveal">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=600&fit=crop" alt="Team collaboration" class="rounded-2xl w-full shadow-2xl">
+                    </div>
+                    <div class="reveal">
+                        <h2 class="text-3xl font-bold mb-6" style="font-family: 'Space Grotesk', sans-serif;">Our Mission</h2>
+                        <p class="mb-4" style="color: var(--fg-muted);">To empower individuals with industry-relevant skills, practical knowledge, and professional confidence needed to excel in the corporate world.</p>
+                        <p class="mb-6" style="color: var(--fg-muted);">We partner with leading corporations to understand their hiring needs and design training programs that produce job-ready candidates from day one.</p>
+                        <div class="flex flex-wrap gap-4">
+                            <div class="flex items-center gap-2">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent);">
+                                    <path d="M20 6L9 17l-5-5"/>
+                                </svg>
+                                <span>Industry-Aligned Curriculum</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent);">
+                                    <path d="M20 6L9 17l-5-5"/>
+                                </svg>
+                                <span>Expert Faculty</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent);">
+                                    <path d="M20 6L9 17l-5-5"/>
+                                </svg>
+                                <span>Lifetime Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Values -->
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="card text-center reveal">
+                        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold mb-2">Excellence</h3>
+                        <p class="text-sm" style="color: var(--fg-muted);">Committed to delivering the highest quality training</p>
+                    </div>
+                    <div class="card text-center reveal">
+                        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold mb-2">Innovation</h3>
+                        <p class="text-sm" style="color: var(--fg-muted);">Constantly evolving with industry trends</p>
+                    </div>
+                    <div class="card text-center reveal">
+                        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold mb-2">Integrity</h3>
+                        <p class="text-sm" style="color: var(--fg-muted);">Building trust through transparency</p>
+                    </div>
+                    <div class="card text-center reveal">
+                        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold mb-2">Community</h3>
+                        <p class="text-sm" style="color: var(--fg-muted);">Fostering a network of professionals</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- COURSES PAGE -->
+    <div class="page" id="courses">
+        <section class="pt-32 pb-20 relative">
+            <div class="grid-pattern"></div>
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16 reveal">
+                    <p class="text-sm font-semibold tracking-wider mb-2" style="color: var(--accent);">OUR PROGRAMS</p>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6" style="font-family: 'Space Grotesk', sans-serif;">Comprehensive Training Programs</h1>
+                    <p class="text-lg max-w-2xl mx-auto" style="color: var(--fg-muted);">Choose from our diverse range of industry-focused training programs designed to accelerate your career growth.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Course 1 -->
+                    <div class="card course-card reveal">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 212, 170, 0.1); color: var(--accent);">8 Weeks</span>
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 136, 255, 0.1); color: #0088ff;">Beginner</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="font-family: 'Space Grotesk', sans-serif;">Corporate Communication Skills</h3>
+                        <p class="mb-4" style="color: var(--fg-muted);">Master professional communication, email etiquette, presentation skills, and business writing.</p>
+                        <div class="flex items-center justify-between pt-4" style="border-top: 1px solid var(--border);">
+                            <span class="font-bold" style="color: var(--accent);">$299</span>
+                            <button class="btn-secondary text-sm py-2 px-4" onclick="showPage('register')">Enroll Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Course 2 -->
+                    <div class="card course-card reveal">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 212, 170, 0.1); color: var(--accent);">12 Weeks</span>
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 136, 255, 0.1); color: #0088ff;">Intermediate</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="font-family: 'Space Grotesk', sans-serif;">Leadership & Management</h3>
+                        <p class="mb-4" style="color: var(--fg-muted);">Develop essential leadership skills, team management, strategic thinking, and decision-making abilities.</p>
+                        <div class="flex items-center justify-between pt-4" style="border-top: 1px solid var(--border);">
+                            <span class="font-bold" style="color: var(--accent);">$499</span>
+                            <button class="btn-secondary text-sm py-2 px-4" onclick="showPage('register')">Enroll Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Course 3 -->
+                    <div class="card course-card reveal">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 212, 170, 0.1); color: var(--accent);">10 Weeks</span>
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 136, 255, 0.1); color: #0088ff;">Beginner</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="font-family: 'Space Grotesk', sans-serif;">Data Analytics Fundamentals</h3>
+                        <p class="mb-4" style="color: var(--fg-muted);">Learn Excel, SQL, Tableau, and data visualization techniques for business intelligence roles.</p>
+                        <div class="flex items-center justify-between pt-4" style="border-top: 1px solid var(--border);">
+                            <span class="font-bold" style="color: var(--accent);">$399</span>
+                            <button class="btn-secondary text-sm py-2 px-4" onclick="showPage('register')">Enroll Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Course 4 -->
+                    <div class="card course-card reveal">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 212, 170, 0.1); color: var(--accent);">6 Weeks</span>
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 136, 255, 0.1); color: #0088ff;">Beginner</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="font-family: 'Space Grotesk', sans-serif;">Interview Preparation</h3>
+                        <p class="mb-4" style="color: var(--fg-muted);">Comprehensive interview training including mock sessions, resume building, and aptitude preparation.</p>
+                        <div class="flex items-center justify-between pt-4" style="border-top: 1px solid var(--border);">
+                            <span class="font-bold" style="color: var(--accent);">$199</span>
+                            <button class="btn-secondary text-sm py-2 px-4" onclick="showPage('register')">Enroll Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Course 5 -->
+                    <div class="card course-card reveal">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 212, 170, 0.1); color: var(--accent);">16 Weeks</span>
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 136, 255, 0.1); color: #0088ff;">Advanced</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="font-family: 'Space Grotesk', sans-serif;">Full-Stack Development</h3>
+                        <p class="mb-4" style="color: var(--fg-muted);">Complete web development training covering frontend, backend, databases, and deployment.</p>
+                        <div class="flex items-center justify-between pt-4" style="border-top: 1px solid var(--border);">
+                            <span class="font-bold" style="color: var(--accent);">$799</span>
+                            <button class="btn-secondary text-sm py-2 px-4" onclick="showPage('register')">Enroll Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Course 6 -->
+                    <div class="card course-card reveal">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 212, 170, 0.1); color: var(--accent);">8 Weeks</span>
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full" style="background: rgba(0, 136, 255, 0.1); color: #0088ff;">Intermediate</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="font-family: 'Space Grotesk', sans-serif;">Digital Marketing Mastery</h3>
+                        <p class="mb-4" style="color: var(--fg-muted);">SEO, SEM, social media marketing, content strategy, and analytics for the digital age.</p>
+                        <div class="flex items-center justify-between pt-4" style="border-top: 1px solid var(--border);">
+                            <span class="font-bold" style="color: var(--accent);">$349</span>
+                            <button class="btn-secondary text-sm py-2 px-4" onclick="showPage('register')">Enroll Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- REGISTER PAGE -->
+    <div class="page" id="register">
+        <section class="pt-32 pb-20 relative">
+            <div class="grid-pattern"></div>
+            <div class="max-w-4xl mx-auto px-6">
+                <div class="text-center mb-12 reveal">
+                    <p class="text-sm font-semibold tracking-wider mb-2" style="color: var(--accent);">REGISTRATION</p>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6" style="font-family: 'Space Grotesk', sans-serif;">Begin Your Training Journey</h1>
+                    <p class="text-lg" style="color: var(--fg-muted);">Fill out the form below to register for our training programs. Our team will contact you within 24 hours.</p>
+                </div>
+
+                <form id="registrationForm" class="reveal">
+                    <!-- Personal Details -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            Personal Details
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <label class="form-label">Full Name <span>*</span></label>
+                                <input type="text" class="form-input" name="fullName" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email Address <span>*</span></label>
+                                <input type="email" class="form-input" name="email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number <span>*</span></label>
+                                <input type="tel" class="form-input" name="phone" placeholder="Enter your phone number" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Date of Birth <span>*</span></label>
+                                <input type="date" class="form-input" name="dob" required>
+                            </div>
+                            <div class="form-group md:col-span-2">
+                                <label class="form-label">Full Address <span>*</span></label>
+                                <input type="text" class="form-input" name="address" placeholder="Street address, City, State, Pincode" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">City <span>*</span></label>
+                                <input type="text" class="form-input" name="city" placeholder="Enter your city" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">State <span>*</span></label>
+                                <input type="text" class="form-input" name="state" placeholder="Enter your state" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Educational Details -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                                <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                            </svg>
+                            Educational Details
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <label class="form-label">Highest Qualification <span>*</span></label>
+                                <select class="form-select" name="qualification" required>
+                                    <option value="">Select your qualification</option>
+                                    <option value="high-school">High School (10th)</option>
+                                    <option value="higher-secondary">Higher Secondary (12th)</option>
+                                    <option value="diploma">Diploma</option>
+                                    <option value="bachelors">Bachelor's Degree</option>
+                                    <option value="masters">Master's Degree</option>
+                                    <option value="phd">PhD</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Field of Study <span>*</span></label>
+                                <input type="text" class="form-input" name="fieldOfStudy" placeholder="e.g., Computer Science, MBA" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">University/Institute <span>*</span></label>
+                                <input type="text" class="form-input" name="university" placeholder="Enter your university/institute name" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Year of Passing <span>*</span></label>
+                                <select class="form-select" name="passingYear" required>
+                                    <option value="">Select year</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2020">2020</option>
+                                    <option value="2019">2019</option>
+                                    <option value="earlier">Earlier</option>
+                                </select>
+                            </div>
+                            <div class="form-group md:col-span-2">
+                                <label class="form-label">Grade/Percentage <span>*</span></label>
+                                <input type="text" class="form-input" name="grade" placeholder="e.g., 8.5 CGPA or 85%" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Professional Details -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                            </svg>
+                            Professional Details (If Applicable)
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Are you currently employed?</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="employed" value="yes" onchange="toggleProfessionalFields(true)">
+                                    <span>Yes</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="employed" value="no" onchange="toggleProfessionalFields(false)" checked>
+                                    <span>No</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="employed" value="fresher" onchange="toggleProfessionalFields(false)">
+                                    <span>Fresher</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="professionalFields" class="grid md:grid-cols-2 gap-6" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label">Current Company</label>
+                                <input type="text" class="form-input" name="company" placeholder="Enter your current company name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Current Designation</label>
+                                <input type="text" class="form-input" name="designation" placeholder="Enter your current role">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Years of Experience</label>
+                                <select class="form-select" name="experience">
+                                    <option value="">Select experience</option>
+                                    <option value="0-1">0-1 years</option>
+                                    <option value="1-3">1-3 years</option>
+                                    <option value="3-5">3-5 years</option>
+                                    <option value="5-10">5-10 years</option>
+                                    <option value="10+">10+ years</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Industry</label>
+                                <select class="form-select" name="industry">
+                                    <option value="">Select industry</option>
+                                    <option value="it">Information Technology</option>
+                                    <option value="finance">Finance & Banking</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="retail">Retail & E-commerce</option>
+                                    <option value="consulting">Consulting</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6 mt-6">
+                            <div class="form-group md:col-span-2">
+                                <label class="form-label">Key Skills</label>
+                                <textarea class="form-textarea" name="skills" placeholder="List your key skills (e.g., Python, Project Management, Communication)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Selection -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10 9 9 9 8 9"/>
+                            </svg>
+                            Training Program Selection
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <label class="form-label">Preferred Program <span>*</span></label>
+                                <select class="form-select" name="program" required>
+                                    <option value="">Select a program</option>
+                                    <option value="communication">Corporate Communication Skills</option>
+                                    <option value="leadership">Leadership & Management</option>
+                                    <option value="analytics">Data Analytics Fundamentals</option>
+                                    <option value="interview">Interview Preparation</option>
+                                    <option value="fullstack">Full-Stack Development</option>
+                                    <option value="marketing">Digital Marketing Mastery</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Preferred Batch Timing <span>*</span></label>
+                                <select class="form-select" name="batchTiming" required>
+                                    <option value="">Select timing</option>
+                                    <option value="morning">Morning (9 AM - 12 PM)</option>
+                                    <option value="afternoon">Afternoon (2 PM - 5 PM)</option>
+                                    <option value="evening">Evening (6 PM - 9 PM)</option>
+                                    <option value="weekend">Weekend (Sat-Sun)</option>
+                                </select>
+                            </div>
+                            <div class="form-group md:col-span-2">
+                                <label class="form-label">Additional Comments</label>
+                                <textarea class="form-textarea" name="comments" placeholder="Any specific requirements or questions?"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Declaration -->
+                    <div class="form-group">
+                        <label class="radio-item">
+                            <input type="checkbox" name="declaration" required>
+                            <span>I hereby declare that the information provided is true and accurate to the best of my knowledge. I agree to the terms and conditions of Train to Corporate. <span style="color: #ef4444;">*</span></span>
+                        </label>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 mt-8">
+                        <button type="submit" class="btn-primary">
+                            <span>Submit Registration</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13"/>
+                                <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                        </button>
+                        <button type="reset" class="btn-secondary">
+                            <span>Clear Form</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- CONTACT PAGE -->
+    <div class="page" id="contact">
+        <section class="pt-32 pb-20 relative">
+            <div class="grid-pattern"></div>
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16 reveal">
+                    <p class="text-sm font-semibold tracking-wider mb-2" style="color: var(--accent);">GET IN TOUCH</p>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6" style="font-family: 'Space Grotesk', sans-serif;">Contact Us</h1>
+                    <p class="text-lg max-w-2xl mx-auto" style="color: var(--fg-muted);">Have questions? We're here to help. Reach out to us through any of the channels below.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 mb-16">
+                    <div class="card text-center reveal">
+                        <div class="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), rgba(0, 136, 255, 0.1));">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent);">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold mb-2">Visit Us</h3>
+                        <p style="color: var(--fg-muted);">123 Business Hub, Tech Park<br>San Francisco, CA 94102</p>
+                    </div>
+                    <div class="card text-center reveal">
+                        <div class="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), rgba(0, 136, 255, 0.1));">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent);">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold mb-2">Call Us</h3>
+                        <p style="color: var(--fg-muted);">+1 (555) 123-4567<br>+1 (555) 987-6543</p>
+                    </div>
+                    <div class="card text-center reveal">
+                        <div class="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), rgba(0, 136, 255, 0.1));">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent);">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-bold mb-2">Email Us</h3>
+                        <p style="color: var(--fg-muted);">info@traintocorporate.com<br>admissions@traintocorporate.com</p>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="max-w-2xl mx-auto reveal">
+                    <div class="card">
+                        <h2 class="text-2xl font-bold mb-6" style="font-family: 'Space Grotesk', sans-serif;">Send us a Message</h2>
+                        <form id="contactForm">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="form-group">
+                                    <label class="form-label">Name <span>*</span></label>
+                                    <input type="text" class="form-input" placeholder="Your name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email <span>*</span></label>
+                                    <input type="email" class="form-input" placeholder="Your email" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Subject <span>*</span></label>
+                                <input type="text" class="form-input" placeholder="How can we help?" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Message <span>*</span></label>
+                                <textarea class="form-textarea" placeholder="Your message" required></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <span>Send Message</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 2L11 13"/>
+                                    <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: var(--bg-secondary); border-top: 1px solid var(--border);">
+        <div class="max-w-7xl mx-auto px-6 py-12">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <a href="#" class="logo mb-4 inline-flex" onclick="showPage('home')">
+                        <div class="logo-icon">
+                            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="10" width="28" height="28" rx="4" stroke="url(#logoGrad2)" stroke-width="3"/>
+                                <path d="M18 24L12 30L18 36" stroke="url(#logoGrad2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M46 10L38 18L46 26" stroke="url(#logoGrad2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="36" cy="36" r="8" stroke="url(#logoGrad2)" stroke-width="3"/>
+                                <defs>
+                                    <linearGradient id="logoGrad2" x1="0" y1="0" x2="48" y2="48">
+                                        <stop offset="0%" stop-color="#00d4aa"/>
+                                        <stop offset="100%" stop-color="#0088ff"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <span class="logo-text">Train to Corporate</span>
+                    </a>
+                    <p class="mt-4 text-sm" style="color: var(--fg-muted);">Empowering professionals to bridge the gap between education and corporate excellence.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" onclick="showPage('home')" class="text-sm hover:underline" style="color: var(--fg-muted);">Home</a></li>
+                        <li><a href="#" onclick="showPage('about')" class="text-sm hover:underline" style="color: var(--fg-muted);">About Us</a></li>
+                        <li><a href="#" onclick="showPage('courses')" class="text-sm hover:underline" style="color: var(--fg-muted);">Courses</a></li>
+                        <li><a href="#" onclick="showPage('register')" class="text-sm hover:underline" style="color: var(--fg-muted);">Register</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Programs</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm hover:underline" style="color: var(--fg-muted);">Leadership Training</a></li>
+                        <li><a href="#" class="text-sm hover:underline" style="color: var(--fg-muted);">Communication Skills</a></li>
+                        <li><a href="#" class="text-sm hover:underline" style="color: var(--fg-muted);">Data Analytics</a></li>
+                        <li><a href="#" class="text-sm hover:underline" style="color: var(--fg-muted);">Digital Marketing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Connect</h4>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center transition-all hover:scale-110" style="background: var(--card); border: 1px solid var(--border);" aria-label="LinkedIn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color: var(--accent);">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                                <rect x="2" y="9" width="4" height="12"/>
+                                <circle cx="4" cy="4" r="2"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center transition-all hover:scale-110" style="background: var(--card); border: 1px solid var(--border);" aria-label="Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color: var(--accent);">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center transition-all hover:scale-110" style="background: var(--card); border: 1px solid var(--border);" aria-label="Facebook">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color: var(--accent);">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 text-center text-sm" style="border-top: 1px solid var(--border); color: var(--fg-muted);">
+                <p>2024 Train to Corporate. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Form submitted successfully!</div>
+
+    <script>
+        // Initialize variables
+        let currentTheme = 'dark';
+        let mobileMenuOpen = false;
+        let currentPage = 'home';
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const toggleSlider = document.querySelector('.toggle-slider');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                toggleSlider.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                `;
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                toggleSlider.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                `;
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+            if (savedTheme === 'light') {
+                document.querySelector('.toggle-slider').innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                `;
+            }
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            mobileMenuOpen = !mobileMenuOpen;
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenuOpen) {
+                mobileMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Page navigation
+        function showPage(pageName) {
+            currentPage = pageName;
+            
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            const selectedPage = document.getElementById(pageName);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+            }
+
+            // Update nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageName) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Trigger reveal animations
+            setTimeout(() => {
+                triggerRevealAnimations();
+            }, 100);
+        }
+
+        // Toggle professional fields
+        function toggleProfessionalFields(show) {
+            const fields = document.getElementById('professionalFields');
+            if (fields) {
+                fields.style.display = show ? 'grid' : 'none';
+            }
+        }
+
+        // Form submission
+        function handleRegistrationSubmit(e) {
+            e.preventDefault();
+            showToast('Registration submitted successfully! We will contact you soon.');
+            e.target.reset();
+            toggleProfessionalFields(false);
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            showToast('Message sent successfully! We will get back to you shortly.');
+            e.target.reset();
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('active');
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 4000);
+        }
+
+        // Navbar scroll effect
+        function handleScroll() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+        }
+
+        // Reveal animations
+        function triggerRevealAnimations() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('active');
+                }, index * 100);
+            });
+        }
+
+        // Intersection Observer for scroll reveals
+        function setupScrollReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                if (isNaN(target)) return;
+                
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+
+                const updateCounter = () => {
+                    current += step;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current).toLocaleString();
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target.toLocaleString();
+                    }
+                };
+
+                // Start animation when in view
+                const observer = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) {
+                        updateCounter();
+                        observer.disconnect();
+                    }
+                }, { threshold: 0.5 });
+
+                observer.observe(counter);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTheme();
+            setupScrollReveal();
+            animateCounters();
+
+            // Form event listeners
+            const registrationForm = document.getElementById('registrationForm');
+            const contactForm = document.getElementById('contactForm');
+            
+            if (registrationForm) {
+                registrationForm.addEventListener('submit', handleRegistrationSubmit);
+            }
+            if (contactForm) {
+                contactForm.addEventListener('submit', handleContactSubmit);
+            }
+
+            // Scroll event
+            window.addEventListener('scroll', handleScroll);
+
+            // Initial reveal for home page
+            triggerRevealAnimations();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileMenuOpen) {
+                toggleMobileMenu();
+            }
+        });
+    </script>
+</body>
+</html>
